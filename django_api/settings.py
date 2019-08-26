@@ -25,6 +25,8 @@ SECRET_KEY = 'nef(el-8)vjgw*yk(8hk$nk^*%77*(m4^n%r__^5bhxbc%k(_^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+API_KEY = '7I5lcSiFQzPyR_yGv-vojCy5dg3YlKddfwih'
+
 ALLOWED_HOSTS = []
 
 
