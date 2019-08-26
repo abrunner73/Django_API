@@ -89,6 +89,7 @@ local_settings.py
 db.sqlite3
 
 # VSCode
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
