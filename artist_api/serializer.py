@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from artist_api.models import Artist
+from artist_api.models import Artist, ArtistSearch
 
 class ArtistSerializer(serializers.ModelSerializer):
 
@@ -8,12 +8,15 @@ class ArtistSerializer(serializers.ModelSerializer):
         exclude = ['id']
 
 
-class ArtistsSerializer(serializers.Serializer):
-    type = serializers.CharField(allow_blank=True)
-    itemsPerPage = serializers.IntegerField(required=False)
-    page = serializers.IntegerField(required=False)
-    total = serializers.IntegerField(required=False)
+class ArtistsSerializer(ArtistSerializer):
     artist = ArtistSerializer(many=True)
+
+    class Meta:
+        model= ArtistSearch
+        exclude = ['id']
+
+    def create(self, validated_data):
+        return ArtistSearch.objects.create(**validated_data)
 
 
 class CoordSerializer(serializers.Serializer):
