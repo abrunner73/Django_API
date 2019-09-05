@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import request
 from django.conf import settings
-from artist_api.serializer import ArtistSerializer, ArtistsSerializer
+from artist_api.serializer import ArtistSerializer, ArtistSearchSerializer, SetListSerializer
 import requests
 
 # Create your views here.
@@ -23,6 +23,7 @@ def load_artist(request):
     else:
         return render(request, 'error.html')
 
+
 def artist_search_result_view(request):
 
     header = {'Accept': 'application/json','x-api-key': settings.API_KEY}
@@ -31,7 +32,7 @@ def artist_search_result_view(request):
 
     json = r.json()
 
-    s = ArtistsSerializer(data=json)
+    s = ArtistSearchSerializer(data=json)
 
     if s.is_valid():
         #artists = s.save()
@@ -41,5 +42,18 @@ def artist_search_result_view(request):
         return render(request, 'error.html')
 
 
+def setlist_result_view(request):
 
+    header = {'Accept': 'application/json','x-api-key': settings.API_KEY}
 
+    r = requests.get("https://api.setlist.fm/rest/1.0/search/setlists?artistMbid=8e3fcd7d-bda1-4ca0-b987-b8528d2ee74e&date=08-06-1992&p=1",headers=header)
+
+    json = r.json()
+
+    s = SetListSerializer(data=json)
+
+    if s.is_valid():
+
+         #print(json['setlist'][0])
+
+         return render(request,'setlist.html', {'setlist': json['setlist'][0]})

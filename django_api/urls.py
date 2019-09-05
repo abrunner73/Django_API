@@ -22,4 +22,5 @@ urlpatterns = [
     path('api_auth/', include('rest_framework.urls')),
     path('artist/', views.load_artist),
     path('artists/', views.artist_search_result_view),
+    path('setlist/', views.setlist_result_view),
 ]

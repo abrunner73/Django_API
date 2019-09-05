@@ -1,84 +1,82 @@
 from rest_framework import serializers
-from artist_api.models import Artist, ArtistSearch
+from artist_api.models import Artist, ArtistSearch, Coordinates, Country, City, Venue, Songs, Set, Tour, SetList
 
 class ArtistSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Artist
-        exclude = ['id']
+        fields = '__all__'
 
 
-class ArtistsSerializer(ArtistSerializer):
+class ArtistSearchSerializer(serializers.ModelSerializer):
     artist = ArtistSerializer(many=True)
 
     class Meta:
         model= ArtistSearch
-        exclude = ['id']
+        fields = '__all__'
 
-    def create(self, validated_data):
-        return ArtistSearch.objects.create(**validated_data)
-
-
-class CoordSerializer(serializers.Serializer):
-    long = serializers.FloatField()
-    lat = serializers.FloatField()
+    #def create(self, validated_data):
+    #    return ArtistSearch.objects.create(**validated_data)
 
 
-class CountrySerializer(serializers.Serializer):
-    code = serializers.CharField()
-    name = serializers.CharField()
+class CoordSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Coordinates
+        fields = '__all__'
 
+class CountrySerializer(serializers.ModelSerializer):
 
-class CitySerializer(serializers.Serializer):
-    id = serializers.CharField(allow_blank=True)
-    name = serializers.CharField(allow_blank=True)
-    stateCode = serializers.CharField(allow_blank=True)
-    state = serializers.CharField(allow_blank=True)
+    class Meta:
+        model = Country
+        fields = '__all__'
+
+class CitySerializer(serializers.ModelSerializer):
     coords = CoordSerializer()
-    country = CountrySerializer()
+    country = Country()
+
+    class Meta:
+        model = City
+        fields = '__all__'
 
 
-class VenueSerializer(serializers.Serializer):
+class VenueSerializer(serializers.ModelSerializer):
     city = CitySerializer()
-    url = serializers.URLField(allow_blank=True)
-    id = serializers.CharField(allow_blank=True)
-    name = serializers.CharField(allow_blank=True)
+
+    class Meta:
+        model = Venue
+        fields = '__all__'
 
 
-class SongSerializer(serializers.Serializer):
-    name = serializers.CharField(allow_blank=True)
-    withh = ArtistSerializer()
+class SongsSerializer(serializers.ModelSerializer):
+    withh = ArtistSerializer(many=True)
     cover = ArtistSerializer()
-    info = serializers.CharField(allow_blank=True)
-    tape = serializers.NullBooleanField()
+
+    class Meta:
+        model = Songs
+        fields = '__all__'
 
 
-class SetSerializer(serializers.Serializer):
-    name = serializers.CharField(allow_blank=True)
-    encore = serializers.IntegerField(required=False)
-    song = SongSerializer(many=True)
+class SetSerializer(serializers.ModelSerializer):
+    song = SongsSerializer(many=True)
+
+    class Meta:
+        model = Set
+        fields = '__all__'
 
 
-class TourSerializer(serializers.Serializer):
-    name = serializers.CharField(allow_blank=True)
+class TourSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tour
+        fields = '__all__'
 
 
-class SetListSerializer(serializers.Serializer):
-    artist = ArtistSerializer()
-    venue = VenueSerializer()
-    tour = TourSerializer()
-    set = SetSerializer(many=True)
-    info = serializers.CharField(allow_blank=True)
-    id = serializers.CharField(allow_blank=True)
-    versionId = serializers.CharField(allow_blank=True)
-    eventDate = serializers.CharField(allow_blank=True)
-    lastUpdated = serializers.CharField(allow_blank=True)
-    url = serializers.URLField(allow_blank=True)
+class SetListSerializer(serializers.ModelSerializer):
+    artist = ArtistSerializer(many=True,required=False)
+    venue = VenueSerializer(many=True,required=False)
+    tour = TourSerializer(many=True,required=False)
+    set = SetSerializer(many=True,required=False)
 
-
-class ConcertSerializer(serializers.Serializer):
-    type = serializers.CharField(allow_blank=True)
-    itemsPerPage = serializers.IntegerField(required=False)
-    page = serializers.IntegerField(required=False)
-    total = serializers.IntegerField(required=False)
-    setlist = SetListSerializer(many=True)
+    class Meta:
+        model = SetList
+        fields = '__all__'

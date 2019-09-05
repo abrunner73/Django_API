@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+<html>
+
+    {% block content %}
+
+        <ul>
+            <li><label>Artist Name: </label>{{setlist.artist.name}}</li>
+            <li><label>Tour: </label>{{setlist.tour.name}}</li>
+            <li><label>Venue:  </label>{{setlist.venue.name}}</li>
+            <li><label>City: </label>{{setlist.venue.city.name}}</li>
+            <li><label>State: </label>{{setlist.venue.city.state}}</li>
+            <li><label>Country: </label>{{setlist.venue.city.country.name}}</li>
+            <li><label>Concert Date: </label>{{setlist.eventDate}}</li>
+            <li><a href={{setlist.venue.url}}><label>Venue Page</label></a></li></li>
+            <hr>
+        </ul>
+
+        <h1>Set List</h1>
+        {% for set in setlist.sets %}
+            {{set.name}}
+            {% for song in set %}
+                {{song.name}}
+            {% endfor %}
+        {% endfor %}
+    {% endblock %}
+
+</html>
