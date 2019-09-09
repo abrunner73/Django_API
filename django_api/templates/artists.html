@@ -2,17 +2,26 @@
 <html>
 
     {% block content %}
-    {% for item in artists %}
-    <ul>
-        <li><label>Name: </label>{{item.name}}</li>
-        <li><label>MusicBrainz ID: </label>{{item.mbid}}</li>
-        <li><label>Tickemaster ID: </label>{{item.tmid}}</li>
-        <li><label>Description: </label>{{item.disambiguation}}</li>
-        <li><a href={{item.url}}><label>Setlist FM Artist Page</label></a></li>
-        <hr>
-        
-    </ul>
-    {% endfor %}
+
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" value="Search">
+        </form>
+        {% if artists %}
+            {% for item in artists %}
+            <ul>
+                <li><label>Name: </label>{{item.name}}</li>
+                <li><label>MusicBrainz ID: </label>{{item.mbid}}</li>
+                <li><label>Tickemaster ID: </label>{{item.tmid}}</li>
+                <li><label>Description: </label>{{item.disambiguation}}</li>
+                <li><a href={{item.url}}><label>Setlist FM Artist Page</label></a></li>
+                <hr>
+                
+            </ul>
+            {% endfor %}
+        {% endif %}
+
     {% endblock %}
 
 </html>
